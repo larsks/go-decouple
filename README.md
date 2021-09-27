@@ -1,7 +1,7 @@
 # go-decouple
 
 Package go-decouple is inspired by the [python-decouple][] package. It
-provides a layer above [gotdotenv][] that handles defaults and type
+provides a layer above [godotenv][] that handles defaults and type
 conversion.
 
 [godotenv]: https://github.com/joho/godotenv
