@@ -20,4 +20,3 @@ If `MY_INT_VAR` exists, `value` will be set to the integer value and
 be set to 0 and `exists` will be `false`. If `MY_INT_VAR` exists but
 cannot be converted into the requested type, `value` will be set to
 0 and `exists` will be `false`.
-
