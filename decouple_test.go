@@ -95,3 +95,35 @@ func (t *TestSuite) TestGetCSVStringNotExists() {
 	t.False(exists)
 	t.Equal(have, expected)
 }
+
+func (t *TestSuite) TestGetCSVStringParseFailure() {
+	expected := []string{"one", "two", "three"}
+
+	t.NoError(os.Setenv("TEST_VAR_EXISTS", "one,\""))
+	have, exists := GetCSVString("TEST_VAR_EXISTS", expected)
+	t.False(exists)
+	t.Equal(have, expected)
+}
+
+func (t *TestSuite) TestGetStringChoicesExists() {
+	expected := "foo"
+	t.NoError(os.Setenv("TEST_VAR_EXISTS", "foo"))
+	have, exists := GetStringChoices("TEST_VAR_EXISTS", "default", []string{"foo", "bar", "baz"})
+	t.True(exists)
+	t.Equal(have, expected)
+}
+
+func (t *TestSuite) TestGetStringChoicesExistsBad() {
+	expected := "default"
+	t.NoError(os.Setenv("TEST_VAR_EXISTS", "qux"))
+	have, exists := GetStringChoices("TEST_VAR_EXISTS", "default", []string{"foo", "bar", "baz"})
+	t.True(exists)
+	t.Equal(have, expected)
+}
+
+func (t *TestSuite) TestGetStringChoicesNotExists() {
+	expected := "default"
+	have, exists := GetStringChoices("TEST_VAR_NOT_EXISTS", "default", []string{"foo", "bar", "baz"})
+	t.False(exists)
+	t.Equal(have, expected)
+}

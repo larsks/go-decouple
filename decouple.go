@@ -1,6 +1,6 @@
 // Package go-decouple is inspired by the python-decouple package
 // (https://github.com/henriquebastos/python-decouple). It provides a
-// layuer above gotdotenv (https://github.com/joho/godotenv) that
+// layer above gotdotenv (https://github.com/joho/godotenv) that
 // handles defaults and type conversion.
 //
 // For example, if you want to read an integer value from an
@@ -63,6 +63,30 @@ func GetString(name, defval string) (string, bool) {
 	}
 
 	return val, true
+}
+
+// GetStringChoices returns the value of an environment as a string if
+// it is a valid choice. Otherwise, returns a default value.
+//
+// If the named variable exists and is a valid choice, return the
+// tuple (value, true). If the named varible exists but is not a valid
+// choice, reutrn (defval, true). If the named variable does not
+// exist, return (defval, false).
+//
+// Example:
+//
+//	os.SetEnv("WIDGET_SIZE", "small")
+//	widget_size := GetStringChoices("WIDGET_SIZE", "small", []string{"small", "medium", "large"})
+func GetStringChoices(name, defval string, choices []string) (string, bool) {
+	val, exists := GetString(name, defval)
+
+	for _, choice := range choices {
+		if val == choice {
+			return val, exists
+		}
+	}
+
+	return defval, exists
 }
 
 // GetInt returns the value of an environment variable as an int.
