@@ -1,6 +1,6 @@
 // Package go-decouple is inspired by the python-decouple package
 // (https://github.com/henriquebastos/python-decouple). It provides a
-// layuer above gotdotenv (https://github.com/joho/godotenv) that
+// layer above gotdotenv (https://github.com/joho/godotenv) that
 // handles defaults and type conversion.
 //
 // For example, if you want to read an integer value from an
