@@ -17,9 +17,11 @@
 package decouple
 
 import (
+	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -52,6 +54,7 @@ func LookupEnv(name string) (string, bool) {
 //
 // Example:
 //
+//	os.Setenv("CONFIG_PATH", "/etc/sharedconfig.yaml")
 //	configpath, _ := decouple.GetString("CONFIG_PATH", "/home/.config/myconfig.yaml")
 func GetString(name, defval string) (string, bool) {
 	val, exists := LookupEnv(name)
@@ -71,6 +74,7 @@ func GetString(name, defval string) (string, bool) {
 //
 // Example:
 //
+//	os.Setenv("WIDGET_COUNT", 2)
 //	widgetCount, _ := decouple.GetInt("WIDGET_COUNT", 10)
 func GetInt(name string, defval int) (int, bool) {
 	val, exists := LookupEnv(name)
@@ -98,6 +102,7 @@ func GetInt(name string, defval int) (int, bool) {
 //
 // Example:
 //
+//	os.Setenv("LOG_LEVEL", 2)
 //	logLevel, _ := decouple.GetIntInRange("LOG_LEVEL", 1, -1, 5)
 func GetIntInRange(name string, defval, minval, maxval int) (int, bool) {
 	ret, exists := GetInt(name, defval)
@@ -122,6 +127,7 @@ func GetIntInRange(name string, defval, minval, maxval int) (int, bool) {
 //
 // Example:
 //
+//	os.Setenv("DEBUG_MODE", "true")
 // 	debugMode, _ := decouple.GetBool("DEBUG_MODE")
 func GetBool(name string, defval bool) (bool, bool) {
 	val, exists := LookupEnv(name)
@@ -135,6 +141,29 @@ func GetBool(name string, defval bool) (bool, bool) {
 	}
 
 	return ret, true
+}
+
+// GetCSVString parses an environment variable as a single row in a
+// CSV document and returns a list of strings.
+//
+// Example:
+//
+//	os.Setenv("LIST_OF_NAMES", "alice,bob,carol")
+//	names, _ := decouple.GetCSVString("LIST_OF_NAMES", []string{})
+func GetCSVString(name string, defval []string) ([]string, bool) {
+	val, exists := GetString(name, "")
+	if !exists {
+		return defval, false
+	}
+
+	r := strings.NewReader(val)
+	csvr := csv.NewReader(r)
+	rec, err := csvr.Read()
+	if err != nil {
+		return defval, false
+	}
+
+	return rec, true
 }
 
 // Load is a proxy for godotenv.Load. It will load environment
