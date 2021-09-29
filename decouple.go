@@ -49,7 +49,7 @@ func LookupEnv(name string) (string, bool) {
 // GetString returns the value of an environment variable as a string.
 //
 // If the named variable exists, return the tuple (value, true). If
-// the named variable does not exist, reutrn the tuple (defval,
+// the named variable does not exist, return the tuple (defval,
 // false).
 //
 // Example:
@@ -69,8 +69,8 @@ func GetString(name, defval string) (string, bool) {
 // it is a valid choice. Otherwise, returns a default value.
 //
 // If the named variable exists and is a valid choice, return the
-// tuple (value, true). If the named varible exists but is not a valid
-// choice, reutrn (defval, true). If the named variable does not
+// tuple (value, true). If the named variable exists but is not a valid
+// choice, return (defval, true). If the named variable does not
 // exist, return (defval, false).
 //
 // Example:
@@ -141,7 +141,7 @@ func GetIntInRange(name string, defval, minval, maxval int) (int, bool) {
 	return int(ret), exists
 }
 
-// GetBool returns the value of an environment varilable as a
+// GetBool returns the value of an environment variable as a
 // boolean.
 //
 // If the named variable exists, attempt to convert it to a bool. If
